@@ -1,4 +1,20 @@
+
 const Game = function () {
+
+  const messages = []
+
+  const console_wrapper = {
+
+    log: function (message) {
+      messages.push(message)
+      //console.log("message => ", message)
+    }
+  }
+
+  this.getMessages = function(){
+    return messages
+  }
+
   var players = new Array()
   var places = new Array(6)
   var purses = new Array(6)
@@ -60,8 +76,8 @@ const Game = function () {
     purses[this.howManyPlayers() - 1] = 0
     inPenaltyBox[this.howManyPlayers() - 1] = false
 
-    console.log(playerName + ' was added')
-    console.log('They are player number ' + players.length)
+    console_wrapper.log(playerName + ' was added')
+    console_wrapper.log('They are player number ' + players.length)
 
     return true
   }
@@ -73,34 +89,34 @@ const Game = function () {
 
   var askQuestion = function () {
     if (currentCategory() == 'Pop')
-      console.log(popQuestions.shift())
+      console_wrapper.log(popQuestions.shift())
     if (currentCategory() == 'Science')
-      console.log(scienceQuestions.shift())
+      console_wrapper.log(scienceQuestions.shift())
     if (currentCategory() == 'Sports')
-      console.log(sportsQuestions.shift())
+      console_wrapper.log(sportsQuestions.shift())
     if (currentCategory() == 'Rock')
-      console.log(rockQuestions.shift())
+      console_wrapper.log(rockQuestions.shift())
   }
 
   this.roll = function (roll) {
-    console.log(players[currentPlayer] + ' is the current player')
-    console.log('They have rolled a ' + roll)
+    console_wrapper.log(players[currentPlayer] + ' is the current player')
+    console_wrapper.log('They have rolled a ' + roll)
 
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true
 
-        console.log(players[currentPlayer] + ' is getting out of the penalty box')
+        console_wrapper.log(players[currentPlayer] + ' is getting out of the penalty box')
         places[currentPlayer] = places[currentPlayer] + roll
         if (places[currentPlayer] > 11) {
           places[currentPlayer] = places[currentPlayer] - 12
         }
 
-        console.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
-        console.log('The category is ' + currentCategory())
+        console_wrapper.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
+        console_wrapper.log('The category is ' + currentCategory())
         askQuestion()
       } else {
-        console.log(players[currentPlayer] + ' is not getting out of the penalty box')
+        console_wrapper.log(players[currentPlayer] + ' is not getting out of the penalty box')
         isGettingOutOfPenaltyBox = false
       }
     } else {
@@ -110,8 +126,8 @@ const Game = function () {
         places[currentPlayer] = places[currentPlayer] - 12
       }
 
-      console.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
-      console.log('The category is ' + currentCategory())
+      console_wrapper.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
+      console_wrapper.log('The category is ' + currentCategory())
       askQuestion()
     }
   }
@@ -119,9 +135,9 @@ const Game = function () {
   this.wasCorrectlyAnswered = function () {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
-        console.log('Answer was correct!!!!')
+        console_wrapper.log('Answer was correct!!!!')
         purses[currentPlayer] += 1
-        console.log(players[currentPlayer] + ' now has ' +
+        console_wrapper.log(players[currentPlayer] + ' now has ' +
           purses[currentPlayer] + ' Gold Coins.')
 
         var winner = didPlayerWin()
@@ -140,10 +156,10 @@ const Game = function () {
 
     } else {
 
-      console.log('Answer was correct!!!!')
+      console_wrapper.log('Answer was correct!!!!')
 
       purses[currentPlayer] += 1
-      console.log(players[currentPlayer] + ' now has ' +
+      console_wrapper.log(players[currentPlayer] + ' now has ' +
         purses[currentPlayer] + ' Gold Coins.')
 
       var winner = didPlayerWin()
@@ -157,8 +173,8 @@ const Game = function () {
   }
 
   this.wrongAnswer = function () {
-    console.log('Question was incorrectly answered')
-    console.log(players[currentPlayer] + ' was sent to the penalty box')
+    console_wrapper.log('Question was incorrectly answered')
+    console_wrapper.log(players[currentPlayer] + ' was sent to the penalty box')
     inPenaltyBox[currentPlayer] = true
 
     currentPlayer += 1
