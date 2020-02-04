@@ -31,8 +31,7 @@ describe('playing', () => {
     var game = new Game();
     game.add('Chet');
     game.roll(12)
-    //game.wrongAnswer()
-   // game.roll(2)
+
     const situation =  game.wasCorrectlyAnswered()
     const messages = game.getMessages()
 
@@ -40,7 +39,7 @@ describe('playing', () => {
   })
 
   describe('after dice have been rolled', () => {
-    it(' should go forward according to the dice result', () => {
+    it(' should go to position N if N is rolled', () => {
       var game = new Game();
       game.add('Chet')
       game.add('Suzan')
@@ -51,6 +50,30 @@ describe('playing', () => {
 
       const positionMessage = messages[messages.length - 3]
       expect(positionMessage).to.equal("Chet's new location is 2")
+    })
+    it('should go to position 0 if 12 is rolled', () => {
+      var game = new Game();
+      game.add('Chet')
+      game.add('Suzan')
+
+      game.roll(12)
+      const messages = game.getMessages()
+      console.log(messages)
+
+      const positionMessage = messages[messages.length - 3]
+      expect(positionMessage).to.equal("Chet's new location is 0")
+    })
+    it('the final position is the dice rolled result minus 12 if the result is more than 12', () => {
+      var game = new Game();
+      game.add('Chet')
+      game.add('Suzan')
+
+      game.roll(13)
+      const messages = game.getMessages()
+      console.log(messages)
+
+      const positionMessage = messages[messages.length - 3]
+      expect(positionMessage).to.equal("Chet's new location is 1")
     })
     it(' should ask a question', () => {
       var game = new Game();
@@ -66,6 +89,33 @@ describe('playing', () => {
     })
   })
 
+  describe('when a player answers a question', ()=>{
+    let game;
+    beforeEach(() => {
+      game = new Game();
+      game.add('Chet')
+      game.add('Suzan')
+    })
+    describe('if the answer is wrong', ()=>{
+      it("should go to the penalty box", ()=>{
+        game.roll(1)
+        game.wrongAnswer()
+        const messages = game.getMessages()
+        const penaltyMessage = messages[messages.length - 1]
+        expect(penaltyMessage).to.equal('Chet was sent to the penalty box')
+      })
+    })
+    describe('if the answer is right', ()=>{
+      it("should gain 1 coin", ()=>{
+        game.roll(1)
+        game.wasCorrectlyAnswered()
+        const messages = game.getMessages()
+        const penaltyMessage = messages[messages.length - 1]
+        expect(penaltyMessage).to.equal('Chet now has 1 Gold Coins.')
+      })
+    })
+  })
+
   /*
   0 Chet was added',
   1 'They are player number 1',
@@ -77,6 +127,7 @@ describe('playing', () => {
   7 'The category is Sports',     -1
   8 'Sports Question 0'           0
   */
+
 
 
 })
