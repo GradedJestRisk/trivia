@@ -131,11 +131,22 @@ describe('playing', () => {
         const messages = game.getMessages()
         expect(messages[messages.length - 4]).to.equal('Chet is getting out of the penalty box')
       })
-      it('should move from its previous position', () => {
-        game.roll(5)
-        const messages = game.getMessages()
-        expect(messages[messages.length - 3]).to.equal("Chet\'s new location is 6")
+      describe('should move from its previous position', () => {
+
+        it('if previous + rolls < 12, go to previous + roll', () => {
+          game.roll(5)
+          const messages = game.getMessages()
+          expect(messages[messages.length - 3]).to.equal("Chet\'s new location is 6")
+        })
+
+        it('if previous + rolls > 12, go to previous + roll modulo 12', () => {
+          game.roll(15)
+          const messages = game.getMessages()
+          expect(messages[messages.length - 3]).to.equal("Chet\'s new location is 4")
+        })
       })
+
+
     })
     describe('when the player rolls an even value', () =>{
       it('should stay in the penalty box', () => {
