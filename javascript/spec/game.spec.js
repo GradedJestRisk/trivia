@@ -144,7 +144,24 @@ describe('playing', () => {
           const messages = game.getMessages()
           expect(messages[messages.length - 3]).to.equal("Chet\'s new location is 4")
         })
+
+        describe('and answered correctly to the question', () => {
+          let messages;
+          beforeEach(() => {
+            game.roll(15)
+            game.wasCorrectlyAnswered()
+            messages = game.getMessages()
+
+          })
+          it('returns the correct answer message', () => {
+            expect(messages[messages.length - 2]).to.equal("Answer was correct!!!!")
+          })
+          it('and update its purse', () => {
+            expect(messages[messages.length - 1]).to.equal("Chet now has 1 Gold Coins.")
+          })
+        })
       })
+
 
 
     })
@@ -185,25 +202,41 @@ describe('playing', () => {
 
   describe('multi-player rules', ()=>{
     let game;
-    beforeEach(() => {
-      game = new Game();
-      const firstPlayer = 'Chet';
-      const nextPlayer = 'Rosie';
-      game.add(firstPlayer)
-      game.add(nextPlayer)
-      game.roll(1)
-      game.wrongAnswer()
-    })
+
     describe('after a player has played', () =>{
+      beforeEach(() => {
+        game = new Game();
+        const firstPlayer = 'Chet';
+        const nextPlayer = 'Rosie';
+        game.add(firstPlayer)
+        game.add(nextPlayer)
+        game.roll(1)
+        game.wrongAnswer()
+      })
       it('should set current player to next player', () => {
         game.roll(5)
         const messages = game.getMessages()
         expect(messages[messages.length - 5]).to.equal('Rosie is the current player')
       })
     })
+    it("wasCorrectlyAnswered returns false when the player won ", ()=>{
+      const game = new Game();
+      game.add('Jackie')
+      game.roll(5)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      const finalResult = game.wasCorrectlyAnswered()
+      expect(finalResult).to.equal(false)
+    })
   })
-
-
 })
 
 describe("according to position, should determine the question's category", () => {
@@ -316,6 +349,23 @@ describe("according to position, should determine the question's category", () =
       const messages = game.getMessages()
       const questionMessage = messages[messages.length - 1]
       expect(questionMessage).to.match(/Rock Question/)
+    })
+  })
+})
+
+describe("purse persistence", ()=> {
+  describe('when the player already has 1 coin and won another one',()=>{
+    it("should mention the player has 2 coins", ()=>{
+      const game = new Game();
+      game.add('Jackie')
+      game.roll(5)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+
+      const messages = game.getMessages()
+      console.log(messages)
+      expect(messages.pop()).to.equal("Jackie now has 2 Gold Coins.")
     })
   })
 })
