@@ -25,6 +25,7 @@ describe('BUG ?!', () => {
   })
 })
 
+
 describe('playing', () => {
 
   it('template', () => {
@@ -145,6 +146,8 @@ describe('playing', () => {
     })
   })
 
+
+
   /*
   0 Chet was added',
   1 'They are player number 1',
@@ -157,6 +160,37 @@ describe('playing', () => {
   8 'Sports Question 0'           0
   */
 
+  describe('setup rules', ()=>{
+    describe('after a player has ben added', () =>{
+      it('should mention the player', () => {
+        let game = new Game();
+        game.add('Chet');
+        const messages = game.getMessages()
+        console.log(messages)
+        expect(messages[0]).to.equal('Chet was added')
+      })
+    })
+  })
+
+  describe('multi-player rules', ()=>{
+    let game;
+    beforeEach(() => {
+      game = new Game();
+      const firstPlayer = 'Chet';
+      const nextPlayer = 'Rosie';
+      game.add(firstPlayer)
+      game.add(nextPlayer)
+      game.roll(1)
+      game.wrongAnswer()
+    })
+    describe('after a player has played', () =>{
+      it('should set current player to next player', () => {
+        game.roll(5)
+        const messages = game.getMessages()
+        expect(messages[messages.length - 5]).to.equal('Rosie is the current player')
+      })
+    })
+  })
 
 
 })
