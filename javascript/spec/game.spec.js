@@ -116,6 +116,35 @@ describe('playing', () => {
     })
   })
 
+  describe('when the player is in the penalty box', ()=>{
+    let game;
+    beforeEach(() => {
+      game = new Game();
+      game.add('Chet')
+      game.roll(1)
+      game.wrongAnswer()
+    })
+    describe('when the player rolls an odd value', () =>{
+      it('should get out of the penalty box', () => {
+        game.roll(5)
+        const messages = game.getMessages()
+        expect(messages[messages.length - 4]).to.equal('Chet is getting out of the penalty box')
+      })
+      it('should move from its previous position', () => {
+        game.roll(5)
+        const messages = game.getMessages()
+        expect(messages[messages.length - 3]).to.equal("Chet\'s new location is 6")
+      })
+    })
+    describe('when the player rolls an even value', () =>{
+      it('should stay in the penalty box', () => {
+        game.roll(2)
+        const messages = game.getMessages()
+        expect(messages[messages.length-1]).to.equal('Chet is not getting out of the penalty box')
+      })
+    })
+  })
+
   /*
   0 Chet was added',
   1 'They are player number 1',
