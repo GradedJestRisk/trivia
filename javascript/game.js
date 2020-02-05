@@ -1,3 +1,4 @@
+const Player = require('./player')
 
 const Game = function () {
 
@@ -70,12 +71,14 @@ const Game = function () {
   }
 
   this.addPlayer = function (playerName) {
-    players.push(playerName)
+
+    const player = new Player(playerName)
+    players.push(player)
     places[this.howManyPlayers() - 1] = 0
     purses[this.howManyPlayers() - 1] = 0
     inPenaltyBox[this.howManyPlayers() - 1] = false
 
-    console_wrapper.log(playerName + ' was added')
+    console_wrapper.log(player.name + ' was added')
     console_wrapper.log('They are player number ' + players.length)
 
     return true
@@ -97,24 +100,24 @@ const Game = function () {
   }
 
   this.roll = function (roll) {
-    console_wrapper.log(players[currentPlayer] + ' is the current player')
+    console_wrapper.log(players[currentPlayer].name + ' is the current player')
     console_wrapper.log('They have rolled a ' + roll)
 
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true
 
-        console_wrapper.log(players[currentPlayer] + ' is getting out of the penalty box')
+        console_wrapper.log(players[currentPlayer].name + ' is getting out of the penalty box')
         places[currentPlayer] = places[currentPlayer] + roll
         if (places[currentPlayer] > 11) {
           places[currentPlayer] = places[currentPlayer] - 12
         }
 
-        console_wrapper.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
+        console_wrapper.log(players[currentPlayer].name + '\'s new location is ' + places[currentPlayer])
         console_wrapper.log('The category is ' + questionCategory())
         askQuestion()
       } else {
-        console_wrapper.log(players[currentPlayer] + ' is not getting out of the penalty box')
+        console_wrapper.log(players[currentPlayer].name + ' is not getting out of the penalty box')
         isGettingOutOfPenaltyBox = false
       }
     } else {
@@ -124,7 +127,7 @@ const Game = function () {
         places[currentPlayer] = places[currentPlayer] - 12
       }
 
-      console_wrapper.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
+      console_wrapper.log(players[currentPlayer].name + '\'s new location is ' + places[currentPlayer])
       console_wrapper.log('The category is ' + questionCategory())
       askQuestion()
     }
@@ -135,7 +138,7 @@ const Game = function () {
       if (isGettingOutOfPenaltyBox) {
         console_wrapper.log('Answer was correct!!!!')
         purses[currentPlayer] += 1
-        console_wrapper.log(players[currentPlayer] + ' now has ' +
+        console_wrapper.log(players[currentPlayer].name + ' now has ' +
           purses[currentPlayer] + ' Gold Coins.')
 
         var winner = didPlayerWin()
@@ -157,7 +160,7 @@ const Game = function () {
       console_wrapper.log('Answer was correct!!!!')
 
       purses[currentPlayer] += 1
-      console_wrapper.log(players[currentPlayer] + ' now has ' +
+      console_wrapper.log(players[currentPlayer].name + ' now has ' +
         purses[currentPlayer] + ' Gold Coins.')
 
       var winner = didPlayerWin()
@@ -172,7 +175,7 @@ const Game = function () {
 
   this.wrongAnswer = function () {
     console_wrapper.log('Question was incorrectly answered')
-    console_wrapper.log(players[currentPlayer] + ' was sent to the penalty box')
+    console_wrapper.log(players[currentPlayer].name + ' was sent to the penalty box')
     inPenaltyBox[currentPlayer] = true
 
     currentPlayer += 1
