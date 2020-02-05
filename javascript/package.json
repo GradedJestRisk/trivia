@@ -7,8 +7,12 @@
     "coverage": "nyc npm run test"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "mocha": "^5.0.5",
+    "@stryker-mutator/core": "^2.5.0",
+    "@stryker-mutator/javascript-mutator": "^2.5.0",
+    "@stryker-mutator/mocha-framework": "^2.5.0",
+    "@stryker-mutator/mocha-runner": "^2.5.0",
+    "chai": "^4.2.0",
+    "mocha": "^7.0.1",
     "nyc": "^15.0.0"
   }
 }
