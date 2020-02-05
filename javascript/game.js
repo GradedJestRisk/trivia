@@ -133,43 +133,35 @@ const Game = function () {
     }
   }
 
+  function selectNextPlayer() {
+    currentPlayerPosition += 1
+    if (currentPlayerPosition == players.length) {
+      currentPlayerPosition = 0
+    }
+  }
+
+  function addCoinToPurse() {
+    console_wrapper.log('Answer was correct!!!!')
+    players[currentPlayerPosition].purse += 1
+    console_wrapper.log(players[currentPlayerPosition].name + ' now has ' +
+        players[currentPlayerPosition].purse + ' Gold Coins.')
+  }
+
   this.wasCorrectlyAnswered = function () {
     if (players[currentPlayerPosition].isInPenaltyBox) {
       if (isGettingOutOfPenaltyBox) {
-        console_wrapper.log('Answer was correct!!!!')
-        players[currentPlayerPosition].purse += 1
-        console_wrapper.log(players[currentPlayerPosition].name + ' now has ' +
-            players[currentPlayerPosition].purse + ' Gold Coins.')
+        addCoinToPurse();
+        selectNextPlayer();
 
-        var winner = didPlayerWin()
-        currentPlayerPosition += 1
-        if (currentPlayerPosition == players.length)
-          currentPlayerPosition = 0
-
-        return winner
+        return didPlayerWin()
       } else {
-        currentPlayerPosition += 1
-        if (currentPlayerPosition == players.length)
-          currentPlayerPosition = 0
-        return true
+        selectNextPlayer();
       }
-
-
     } else {
+      addCoinToPurse();
+      selectNextPlayer();
 
-      console_wrapper.log('Answer was correct!!!!')
-
-      players[currentPlayerPosition].purse += 1
-      console_wrapper.log(players[currentPlayerPosition].name + ' now has ' +
-          players[currentPlayerPosition].purse + ' Gold Coins.')
-
-      var winner = didPlayerWin()
-
-      currentPlayerPosition += 1
-      if (currentPlayerPosition == players.length)
-        currentPlayerPosition = 0
-
-      return winner
+      return didPlayerWin()
     }
   }
 
