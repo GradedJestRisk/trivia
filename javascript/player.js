@@ -4,8 +4,8 @@ module.exports =
       this.name = name;
       this.purse = 0;
       this.position = 0;
+      this.isInPenalityBox = false;
     }
-
   }
 
 

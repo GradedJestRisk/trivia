@@ -20,4 +20,8 @@ describe('when a played in created', ()=>{
   it('should be located at position0', () =>{
     expect(player.position).to.equal(0)
   })
+
+  it('should not be in the penalty box', () =>{
+    expect(player.isInPenalityBox).to.equal(false)
+  })
 })
