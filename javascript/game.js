@@ -29,10 +29,10 @@ const Game = function () {
   var isGettingOutOfPenaltyBox = false
 
   var didPlayerWin = function () {
-    return !(purses[currentPlayer] == 6)
+    return purses[currentPlayer] === 6
   }
 
-  var currentCategory = function () {
+  var questionCategory = function () {
     if (places[currentPlayer] == 0)
       return 'Pop'
     if (places[currentPlayer] == 4)
@@ -54,23 +54,22 @@ const Game = function () {
     return 'Rock'
   }
 
-  this.createRockQuestion = function (index) {
-    return 'Rock Question ' + index
+  function createQuestions() {
+    for (var i = 0; i < 50; i++) {
+      popQuestions.push('Pop Question ' + i)
+      scienceQuestions.push('Science Question ' + i)
+      sportsQuestions.push('Sports Question ' + i)
+      rockQuestions.push('Rock Question ' +  i)
+    }
   }
 
-  for (var i = 0; i < 50; i++) {
-    popQuestions.push('Pop Question ' + i)
-    scienceQuestions.push('Science Question ' + i)
-    sportsQuestions.push('Sports Question ' + i)
-    rockQuestions.push(this.createRockQuestion(i))
-  }
+  createQuestions.call(this);
 
-
-  this.isPlayable = function (howManyPlayers) {
+  this.canGameStart = function (howManyPlayers) {
     return howManyPlayers >= 2
   }
 
-  this.add = function (playerName) {
+  this.addPlayer = function (playerName) {
     players.push(playerName)
     places[this.howManyPlayers() - 1] = 0
     purses[this.howManyPlayers() - 1] = 0
@@ -86,15 +85,14 @@ const Game = function () {
     return players.length
   }
 
-
   var askQuestion = function () {
-    if (currentCategory() == 'Pop')
+    if (questionCategory() == 'Pop')
       console_wrapper.log(popQuestions.shift())
-    if (currentCategory() == 'Science')
+    if (questionCategory() == 'Science')
       console_wrapper.log(scienceQuestions.shift())
-    if (currentCategory() == 'Sports')
+    if (questionCategory() == 'Sports')
       console_wrapper.log(sportsQuestions.shift())
-    if (currentCategory() == 'Rock')
+    if (questionCategory() == 'Rock')
       console_wrapper.log(rockQuestions.shift())
   }
 
@@ -113,7 +111,7 @@ const Game = function () {
         }
 
         console_wrapper.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
-        console_wrapper.log('The category is ' + currentCategory())
+        console_wrapper.log('The category is ' + questionCategory())
         askQuestion()
       } else {
         console_wrapper.log(players[currentPlayer] + ' is not getting out of the penalty box')
@@ -127,7 +125,7 @@ const Game = function () {
       }
 
       console_wrapper.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
-      console_wrapper.log('The category is ' + currentCategory())
+      console_wrapper.log('The category is ' + questionCategory())
       askQuestion()
     }
   }

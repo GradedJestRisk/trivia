@@ -6,7 +6,7 @@ const Game = require('../game.js')
 describe('BUG ?!', () => {
   it('allow single player (isPlayable not used)', () => {
     var game = new Game();
-    game.add('Chet');
+    game.addPlayer('Chet');
     game.roll(12)
 
     // Then
@@ -15,16 +15,16 @@ describe('BUG ?!', () => {
   })
   it("roll 0 is allowed ", ()=>{
     var game = new Game();
-    game.add('Chet')
-    game.add('Suzan')
+    game.addPlayer('Chet')
+    game.addPlayer('Suzan')
 
     game.roll(0)
     expect(true).to.equal(true)
   })
   it("should change player if the current player is still in the penalty box", ()=>{
       const game = new Game();
-      game.add('Chet')
-      game.add('Henry')
+      game.addPlayer('Chet')
+      game.addPlayer('Henry')
       //chet qui joue
       game.roll(3)
       game.wrongAnswer()
@@ -40,37 +40,37 @@ describe('BUG ?!', () => {
       expect(messages[messages.length-4]).to.equal('Chet is getting out of the penalty box')
   })
   describe('winning or losing; wasCorrectlyAnswered', ()=>{
-    it("returns true when the player does not win ", ()=>{
+    it("returns false when the player does not win ", ()=>{
       const game = new Game();
-      game.add('Jackie')
+      game.addPlayer('Jackie')
       game.roll(5)
-      const finalResult = game.wasCorrectlyAnswered()
-      expect(finalResult).to.equal(true)
-    })
-    it("returns false when the player does win ", ()=>{
-      const game = new Game();
-      game.add('Jackie')
-      game.roll(5)
-      game.wasCorrectlyAnswered()
-      game.roll(3)
-      game.wasCorrectlyAnswered()
-      game.roll(3)
-      game.wasCorrectlyAnswered()
-      game.roll(3)
-      game.wasCorrectlyAnswered()
-      game.roll(3)
-      game.wasCorrectlyAnswered()
-      game.roll(3)
       const finalResult = game.wasCorrectlyAnswered()
       expect(finalResult).to.equal(false)
+    })
+    it("returns true when the player does win ", ()=>{
+      const game = new Game();
+      game.addPlayer('Jackie')
+      game.roll(5)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      game.wasCorrectlyAnswered()
+      game.roll(3)
+      const finalResult = game.wasCorrectlyAnswered()
+      expect(finalResult).to.equal(true)
     })
   })
   describe('a player can join the game anytime', ()=>{
     it("returns true when the player does not win ", ()=>{
       const game = new Game();
-      game.add('Jackie')
+      game.addPlayer('Jackie')
       game.roll(5)
-      game.add('Susie')
+      game.addPlayer('Susie')
       const finalResult = game.wasCorrectlyAnswered()
      const messages = game.getMessages()
 
@@ -85,8 +85,8 @@ describe('playing', () => {
   describe('after dice have been rolled', () => {
     it(' should go to position N if N is rolled', () => {
       var game = new Game();
-      game.add('Chet')
-      game.add('Suzan')
+      game.addPlayer('Chet')
+      game.addPlayer('Suzan')
 
       game.roll(2)
       const messages = game.getMessages()
@@ -96,8 +96,8 @@ describe('playing', () => {
     })
     it('should go to position 0 if 12 is rolled', () => {
       var game = new Game();
-      game.add('Chet')
-      game.add('Suzan')
+      game.addPlayer('Chet')
+      game.addPlayer('Suzan')
 
       game.roll(12)
       const messages = game.getMessages()
@@ -107,8 +107,8 @@ describe('playing', () => {
     })
     it('the final position is the dice rolled result minus 12 if the result is more than 12', () => {
       var game = new Game();
-      game.add('Chet')
-      game.add('Suzan')
+      game.addPlayer('Chet')
+      game.addPlayer('Suzan')
 
       game.roll(13)
       const messages = game.getMessages()
@@ -118,8 +118,8 @@ describe('playing', () => {
     })
     it(' should ask a question', () => {
       var game = new Game();
-      game.add('Chet')
-      game.add('Suzan')
+      game.addPlayer('Chet')
+      game.addPlayer('Suzan')
 
       game.roll(2)
       const messages = game.getMessages()
@@ -131,7 +131,7 @@ describe('playing', () => {
     let game;
     beforeEach(() => {
       game = new Game();
-      game.add('Chet')
+      game.addPlayer('Chet')
       game.roll(1)
       game.wrongAnswer()
     })
@@ -188,7 +188,7 @@ describe('playing', () => {
     describe('after a player has ben added', () =>{
       it('should mention the player', () => {
         let game = new Game();
-        game.add('Chet');
+        game.addPlayer('Chet');
         const messages = game.getMessages()
         expect(messages[0]).to.equal('Chet was added')
       })
@@ -201,8 +201,8 @@ describe('playing', () => {
         game = new Game();
         const firstPlayer = 'Chet';
         const nextPlayer = 'Rosie';
-        game.add(firstPlayer)
-        game.add(nextPlayer)
+        game.addPlayer(firstPlayer)
+        game.addPlayer(nextPlayer)
         game.roll(1)
         game.wrongAnswer()
       })
@@ -221,8 +221,8 @@ describe("questions", () => {
       let game;
       beforeEach(() => {
         game = new Game();
-        game.add('Chet')
-        game.add('Suzan')
+        game.addPlayer('Chet')
+        game.addPlayer('Suzan')
       })
 
       it("when the position is 0 ", () => {
@@ -250,8 +250,8 @@ describe("questions", () => {
       let game;
       beforeEach(() => {
         game = new Game();
-        game.add('Chet')
-        game.add('Suzan')
+        game.addPlayer('Chet')
+        game.addPlayer('Suzan')
       })
 
       it("when the position is 1 ", () => {
@@ -279,8 +279,8 @@ describe("questions", () => {
       let game;
       beforeEach(() => {
         game = new Game();
-        game.add('Chet')
-        game.add('Suzan')
+        game.addPlayer('Chet')
+        game.addPlayer('Suzan')
       })
 
       it("when the position is 2 ", () => {
@@ -308,8 +308,8 @@ describe("questions", () => {
       let game;
       beforeEach(() => {
         game = new Game();
-        game.add('Chet')
-        game.add('Suzan')
+        game.addPlayer('Chet')
+        game.addPlayer('Suzan')
       })
 
       it("when the position is 3 ", () => {
@@ -331,8 +331,8 @@ describe("questions", () => {
     let game;
     beforeEach(() => {
       game = new Game();
-      game.add('Chet')
-      game.add('Suzan')
+      game.addPlayer('Chet')
+      game.addPlayer('Suzan')
     })
     describe('if the answer is wrong', ()=>{
       it("should go to the penalty box", ()=>{
@@ -359,7 +359,7 @@ describe("purse persistence", ()=> {
   describe('when the player already has 1 coin and won another one',()=>{
     it("should mention the player has 2 coins", ()=>{
       const game = new Game();
-      game.add('Jackie')
+      game.addPlayer('Jackie')
       game.roll(5)
       game.wasCorrectlyAnswered()
       game.roll(3)
