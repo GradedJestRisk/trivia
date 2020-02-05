@@ -16,4 +16,8 @@ describe('when a played in created', ()=>{
   it('should have an empty purse', () =>{
     expect(player.purse).to.equal(0)
   })
+
+  it('should be located at position0', () =>{
+    expect(player.position).to.equal(0)
+  })
 })

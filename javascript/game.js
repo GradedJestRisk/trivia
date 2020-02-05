@@ -17,7 +17,6 @@ const Game = function () {
   }
 
   var players = new Array()
-  var places = new Array(6)
   var inPenaltyBox = new Array(6)
 
   var popQuestions = new Array()
@@ -33,23 +32,24 @@ const Game = function () {
   }
 
   var questionCategory = function () {
-    if (places[currentPlayerPosition] == 0)
+    const currentPosition = players[currentPlayerPosition].position
+    if (currentPosition == 0)
       return 'Pop'
-    if (places[currentPlayerPosition] == 4)
+    if (currentPosition == 4)
       return 'Pop'
-    if (places[currentPlayerPosition] == 8)
+    if (currentPosition == 8)
       return 'Pop'
-    if (places[currentPlayerPosition] == 1)
+    if (currentPosition == 1)
       return 'Science'
-    if (places[currentPlayerPosition] == 5)
+    if (currentPosition == 5)
       return 'Science'
-    if (places[currentPlayerPosition] == 9)
+    if (currentPosition == 9)
       return 'Science'
-    if (places[currentPlayerPosition] == 2)
+    if (currentPosition == 2)
       return 'Sports'
-    if (places[currentPlayerPosition] == 6)
+    if (currentPosition == 6)
       return 'Sports'
-    if (places[currentPlayerPosition] == 10)
+    if (currentPosition == 10)
       return 'Sports'
     return 'Rock'
   }
@@ -73,7 +73,6 @@ const Game = function () {
 
     const player = new Player(playerName)
     players.push(player)
-    places[this.howManyPlayers() - 1] = 0
     inPenaltyBox[this.howManyPlayers() - 1] = false
 
     console_wrapper.log(player.name + ' was added')
@@ -97,6 +96,14 @@ const Game = function () {
       console_wrapper.log(rockQuestions.shift())
   }
 
+  function movePlayer(roll) {
+    players[currentPlayerPosition].position += roll
+
+    if (players[currentPlayerPosition].position > 11) {
+       players[currentPlayerPosition].position -=  12
+    }
+  }
+
   this.roll = function (roll) {
     console_wrapper.log(players[currentPlayerPosition].name + ' is the current player')
     console_wrapper.log('They have rolled a ' + roll)
@@ -106,12 +113,12 @@ const Game = function () {
         isGettingOutOfPenaltyBox = true
 
         console_wrapper.log(players[currentPlayerPosition].name + ' is getting out of the penalty box')
-        places[currentPlayerPosition] = places[currentPlayerPosition] + roll
-        if (places[currentPlayerPosition] > 11) {
-          places[currentPlayerPosition] = places[currentPlayerPosition] - 12
-        }
+        movePlayer(roll);
 
-        console_wrapper.log(players[currentPlayerPosition].name + '\'s new location is ' + places[currentPlayerPosition])
+
+        const message = players[currentPlayerPosition].name + '\'s new location is ' + players[currentPlayerPosition].position
+
+        console_wrapper.log(message)
         console_wrapper.log('The category is ' + questionCategory())
         askQuestion()
       } else {
@@ -120,12 +127,9 @@ const Game = function () {
       }
     } else {
 
-      places[currentPlayerPosition] = places[currentPlayerPosition] + roll
-      if (places[currentPlayerPosition] > 11) {
-        places[currentPlayerPosition] = places[currentPlayerPosition] - 12
-      }
+      movePlayer(roll);
 
-      console_wrapper.log(players[currentPlayerPosition].name + '\'s new location is ' + places[currentPlayerPosition])
+      console_wrapper.log(players[currentPlayerPosition].name + '\'s new location is ' + players[currentPlayerPosition].position)
       console_wrapper.log('The category is ' + questionCategory())
       askQuestion()
     }
