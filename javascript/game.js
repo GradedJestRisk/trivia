@@ -52,7 +52,7 @@ const Game = function () {
       return 'Sports'
     return 'Rock'
   }
-
+9
   function createQuestions() {
     for (var i = 0; i < 50; i++) {
       popQuestions.push('Pop Question ' + i)
@@ -84,6 +84,7 @@ const Game = function () {
   }
 
   var askQuestion = function () {
+    console_wrapper.log('The category is ' + questionCategory())
     if (questionCategory() == 'Pop')
       console_wrapper.log(popQuestions.shift())
     if (questionCategory() == 'Science')
@@ -100,6 +101,7 @@ const Game = function () {
     if (players[currentPlayerPosition].position > 11) {
        players[currentPlayerPosition].position -=  12
     }
+    console_wrapper.log(players[currentPlayerPosition].name + '\'s new location is ' + players[currentPlayerPosition].position)
   }
 
   this.roll = function (roll) {
@@ -108,27 +110,17 @@ const Game = function () {
 
     if (players[currentPlayerPosition].isInPenaltyBox) {
       if (roll % 2 != 0) {
-        isGettingOutOfPenaltyBox = true
-
+        players[currentPlayerPosition].isInPenaltyBox = false
         console_wrapper.log(players[currentPlayerPosition].name + ' is getting out of the penalty box')
+
         movePlayer(roll);
-
-
-        const message = players[currentPlayerPosition].name + '\'s new location is ' + players[currentPlayerPosition].position
-
-        console_wrapper.log(message)
-        console_wrapper.log('The category is ' + questionCategory())
         askQuestion()
       } else {
+        players[currentPlayerPosition].isInPenaltyBox = true
         console_wrapper.log(players[currentPlayerPosition].name + ' is not getting out of the penalty box')
-        isGettingOutOfPenaltyBox = false
       }
     } else {
-
       movePlayer(roll);
-
-      console_wrapper.log(players[currentPlayerPosition].name + '\'s new location is ' + players[currentPlayerPosition].position)
-      console_wrapper.log('The category is ' + questionCategory())
       askQuestion()
     }
   }
@@ -148,21 +140,11 @@ const Game = function () {
   }
 
   this.wasCorrectlyAnswered = function () {
-    if (players[currentPlayerPosition].isInPenaltyBox) {
-      if (isGettingOutOfPenaltyBox) {
+    if (!players[currentPlayerPosition].isInPenaltyBox) {
         addCoinToPurse();
-        selectNextPlayer();
-
-        return didPlayerWin()
-      } else {
-        selectNextPlayer();
-      }
-    } else {
-      addCoinToPurse();
-      selectNextPlayer();
-
-      return didPlayerWin()
     }
+    selectNextPlayer();
+    return didPlayerWin()
   }
 
   this.wrongAnswer = function () {
@@ -170,10 +152,7 @@ const Game = function () {
     console_wrapper.log(players[currentPlayerPosition].name + ' was sent to the penalty box')
     players[currentPlayerPosition].isInPenaltyBox = true
 
-    currentPlayerPosition += 1
-    if (currentPlayerPosition == players.length)
-      currentPlayerPosition = 0
-    return true
+    selectNextPlayer();
   }
 }
 

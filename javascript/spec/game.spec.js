@@ -170,6 +170,18 @@ describe('playing', () => {
             expect(messages[messages.length - 1]).to.equal("Chet now has 1 Gold Coins.")
           })
         })
+        describe('and answered incorrectly to the question', () => {
+          let messages;
+          beforeEach(() => {
+            game.roll(15)
+            game.wrongAnswer()
+            messages = game.getMessages()
+
+          })
+          it('returns the correct answer message', () => {
+            expect(messages[messages.length - 1]).to.equal("Chet was sent to the penalty box")
+          })
+        })
       })
 
 
